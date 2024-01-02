@@ -19,13 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.listen(5000); 
 
 const updatedStatus = {};
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
 
 const getCurrentDate = () => {
   const currentDate = new Date();
@@ -47,6 +40,8 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false,
   },
 });
+
+
 app.get('/api/rooms/all', async (req, res) => {
   try {
       const allRooms = await Room.find({});
@@ -75,16 +70,52 @@ app.get('/api/rooms/updated-status', (req, res) => {
   res.json(updatedStatus);
 });
 
-app.put('/api/rooms1/:id', async (req, res) => {
+// app.get('/api/rooms/:id', async (req, res) => {
+//   const id = req.params.id;
+
+//   try {
+//     // Find the room by ID in the database
+//     const room = await Room.findById(id);
+
+//     if (!room) {
+//       // If the room is not found, return a 404 response
+//       return res.status(404).json({ error: 'Room not found' });
+//     }
+
+//     // If the room is found, return it in the response
+//     res.json(room);
+//   } catch (error) {
+//     console.error('Error fetching room data by ID:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+app.get('/api/rooms/:id', async (req, res) => {
   const id = req.params.id;
-  const { rooms, roomprice } = req.body;
 
   try {
-    await Room.updateOne({ id }, { rooms, roomprice }, { upsert: true });
-    res.json({ success: true });
+    const room = await Room.findOne({ id });
+    res.json(room || {});
   } catch (error) {
-    console.error('Error updating room data:', error);
+    console.error('Error fetching room data:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+app.put('/api/rooms1/:id', async (req, res) => {
+  const id = req.params.id;
+  const { rooms, roomprice , roomprice1,roomprice2,trip,roomno1,roomno2,roomno3} = req.body;
+
+  try {
+      // Update the room data in the database
+      await Room.updateOne({ id }, 
+        { rooms, roomprice, roomprice1, roomprice2, trip,roomno1,roomno2,roomno3, lastUpdate: new Date().toISOString(),status: 'updated', },
+        { upsert: true }
+        );
+        updatedStatus[id] = true;
+
+        res.json({ success: true });
+  } catch (error) {
+      console.error('Error updating room data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -289,4 +320,3 @@ app.post('/sendInvoiceByEmail', async (req, resp) => {
 });
 
 // You can define other endpoints here
-

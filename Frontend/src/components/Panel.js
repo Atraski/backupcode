@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom';
 import {productData} from './Atstaysdata';
 import './Panel.css';
 
-const Panel1 = () => {
+const Panel = () => {
     const params = useParams();
     const [rooms, setRooms] = useState(2);
     const [roomprice, setRoomprice] = useState('');
     const [roomprice1, setRoomprice1] = useState('');
     const [roomprice2, setRoomprice2] = useState('');
+    const [roomno1, setroom1] = useState('');
+    const [roomno2, setroom2] = useState('');
+    const [roomno3, setroom3] = useState('');
+
     const [trip , Settrip] = useState();
     const [consdata , setConsdata] = useState(productData);
 
@@ -18,9 +22,7 @@ const Panel1 = () => {
     console.log(cds , "mmm")
     console.log(cds[0].trip , "ccc")
     const s=cds[0].trip;
-    
 
-    
     useEffect(() => {
         // Fetch the initial data from the server when the component mounts
         fetchDataFromServer();
@@ -35,6 +37,11 @@ const Panel1 = () => {
             setRooms(data.rooms || 2);
             setRoomprice(data.roomprice || '');
             Settrip(s)
+            setRoomprice(data.roomno1)
+            setRoomprice1(data.roomno2)
+            setRoomprice2(data.roomno3)
+            
+            console.log(data,'uu')
             
         } catch (error) {
             console.error('Error fetching data from server:', error);
@@ -53,7 +60,10 @@ const Panel1 = () => {
                     roomprice,
                     roomprice1,
                     roomprice2,
-                    trip
+                    trip,
+                    roomno1,
+                    roomno2,
+                    roomno3
     
                 }),
 
@@ -85,7 +95,7 @@ const Panel1 = () => {
                 AtStay Updation Pannel
           </div>
         
-        <div className="container-fluid msc" style={{height:'60vh' , width:'80vw' , display:'flex' ,alignItems:'center', justifyContent:'center', boxShadow:'1px 2px 10px black' , flexDirection:'column' , marginTop:'100px'}}>
+        <div className="container-fluid msc" style={{height:'80vh' , width:'80vw' , display:'flex' ,alignItems:'center', justifyContent:'center', boxShadow:'1px 2px 10px black' , flexDirection:'column' , marginTop:'50px'}}>
           
 
             <div className="updation" style={{width:'75vw' , textAlign:'center'}}>
@@ -104,11 +114,19 @@ const Panel1 = () => {
                         <th>Premium Rooms<input type="number" value={roomprice2} onChange={(e)=>{setRoomprice2(e.target.value)}} style={{marginBottom:'0px'}}/></th>
 
                     </tr>
+                    <p className="heading-1">Rooms Availability</p>
+                    <tr className="hms" style={{display:'flex' , justifyContent:'space-around' , alignItems:'center'}}>
+                        
+                    <th>Single Rooms Availability<input type="number" value={roomno1} onChange={(e)=>{setroom1(e.target.value)}} style={{marginBottom:'0px'}}/></th>
+                        <th>Double Rooms Availability<input type="number" value={roomno2} onChange={(e)=>{setroom2(e.target.value)}} style={{marginBottom:'0px'}}/></th>
+                        <th>Premium Rooms Availability<input type="number" value={roomno3} onChange={(e)=>{setroom3(e.target.value)}} style={{marginBottom:'0px'}}/></th>
 
-                    <tr style={{display:'flex' , justifyContent:'space-around' , alignItems:'center'}}>
+                    </tr>
+
+                    {/* <tr style={{display:'flex' , justifyContent:'space-around' , alignItems:'center'}}>
                         <th style={{width:'230px'}}>Update Your Rooms Availability</th>
                         <th><input type="number" value={rooms} onChange={(e)=>{setRooms(e.target.value)}} style={{marginBottom:'0px'}}/></th>
-                    </tr>
+                    </tr> */}
                 </table>
 
 
@@ -125,4 +143,4 @@ const Panel1 = () => {
 }
 
 
-export default Panel1;
+export default Panel;

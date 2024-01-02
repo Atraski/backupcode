@@ -18,8 +18,9 @@ import { DatePicker } from 'antd';
 import { Link } from 'react-router-dom';
 const { Rangepicker } = DatePicker
 
-function AccordionItem({ title }) {
+function AccordionItem({  }) {
   const [isOpen, setIsOpen] = useState(false);
+ 
 
 
 
@@ -74,14 +75,19 @@ function Atstaynextpage() {
   const [numss, setnumss] = useState(() => (localStorage.getItem('child')) || 0);
   const [nums, setnums] = useState(() => (localStorage.getItem('adult')) || 0);
   const [num, setnum] = useState(() => (localStorage.getItem('room')) || 0);
-  const [numberOfDays, setNumberOfDays] = useState(0);                
+  const [numberOfDays, setNumberOfDays] = useState(0); 
+  const [r1, setr1] = useState();  
+  const [r2, setr2] = useState();  
+  const [r3, setr3] = useState();  
+ 
+                
 
 
   useEffect(() => {
     const checkinDate = new Date(checkin);
     const checkoutDate = new Date(checkout);
 
-    if (!isNaN(checkinDate) && !isNaN(checkoutDate)) {
+    if (!isNaN(checkinDate) && !isNaN(checkoutDate )) {
       const timeDifference = checkoutDate - checkinDate;
       const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
@@ -126,9 +132,16 @@ function Atstaynextpage() {
 
   }, [data, dd1, faci, checkout, checkin, numss, nums, num,tripValue]);
 
+const dataa =localStorage.getItem('valuee')
+const dataa1 =localStorage.getItem('valuee1')
+
+const dataa2 =localStorage.getItem('valuee2')
 
 
   const [updatedRooms, setUpdatedRooms] = useState(2) 
+  const[s,setss] =useState(dataa,dataa1,dataa2)
+
+
   console.log(updatedRooms)
     // const [updatedRoomPrice, setUpdatedRoomPrice] = useState(() => localStorage.getItem('updatedRoomPrice') || '');
 
@@ -136,22 +149,76 @@ function Atstaynextpage() {
 
     useEffect(() => {
       fetchDataFromServer()
+      setDatass(jsondata);
+
           
-    },);
+    },[r1, r2, r3]);
+
+    
 
     const fetchDataFromServer = async () => {
       try {
           const response = await fetch(`http://localhost:5000/api/rooms/${params.id}`);
           const data = await response.json();
-          console.log(data)
+          console.log(data, "mmm");
 
-          setUpdatedRooms(data.rooms || 2);
+          // const allRoomNumbers = data.rooms?.reduce((acc, room) => {
+          //   // Concatenate roomno1, roomno2, and roomno3 to the accumulator array
+          //   return acc.concat(room.roomno1, room.roomno2, room.roomno3);
+          // }, []) || [];
+
+          // setDatass(allRoomNumbers);
+
+
+          // setUpdatedRooms(data.rooms || 2);
+          setr1(data.roomno1 ||2);
+          setr2(data.roomno2 ||2);
+          setr3(data.roomno3 ||2);
+
+          console.log(r1 , r2 ,r3)
+
+
+
+          
+
           // setRoomprice(data.roomprice || '');
       } catch (error) {
           console.error('Error fetching data from server:', error);
       }
 
   };
+
+  const jsondata = [
+    {
+      "id" : 1,
+      "room" : r1,
+      
+    },
+  
+    {
+      "id" : 2,
+      "room" : r2,
+    },
+    
+    {
+      "id" : 3,
+      "room" : r3,
+    },
+  ]
+
+  
+  console.log(r1 , r2 ,r3)
+  const [datass , setDatass] = useState(jsondata);
+
+
+  
+
+
+
+  
+  
+
+
     
     
 
@@ -173,11 +240,7 @@ function Atstaynextpage() {
       else{
         alert("Oops Rooms is not Available")
       }
-    
-    
-    
-    
-    
+
   };
   
   const inc1 = () => {
@@ -191,8 +254,11 @@ function Atstaynextpage() {
   };
   
   const inc2 = () => {
-    if(numss < 1){
+    if(numss <num){
       setnumss(parseInt(numss) + 1);
+    }
+    else{
+      alert(" Sorry no more children allowed")
     }
     
   };
@@ -258,6 +324,8 @@ function Atstaynextpage() {
     box.style.setProperty('display', 'block', 'important');
     classss.classList.remove('container')
     classss.classList.add('container-fluid');
+
+    
   }
 
   const closebox = () => {
@@ -269,25 +337,51 @@ function Atstaynextpage() {
     classss.classList.remove('container-fluid');
   }
 
-  const showprice = () => {
+  const Scrooltop=()=>{
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto', // You can use 'auto' for an instant scroll
+      
+    });
+  }
 
+  const showprice = () => {
+    
+   if(!checkin && !checkout){
+    alert("checkin checkout dates are not selected")
+    return -1;
+   }
+   if(num==0){
+    alert("please select rooms")
+    return -1;
+
+   }
     if(num>updatedRooms){
       alert(`Only ${updatedRooms} is Available`)
-    }
+      return -1;
 
+    }
+    
     else{
       const box = document.querySelector('.hideing');
+
+
     if(window.innerWidth <= 974){
+      
       box.style.setProperty('display', 'none', 'important');
     }
     
     const scrollY = 1200; // Adjust this value as needed
-
+    const showbtn= document.querySelector('.showbtn');
     // Scroll to the specified Y-coordinate
+    showbtn.style.setProperty('display', 'block', 'important');
+
     window.scrollTo({
       top: scrollY,
       behavior: 'smooth', // You can use 'auto' for an instant scroll
+      
     });
+   
     }
 
     
@@ -297,6 +391,7 @@ function Atstaynextpage() {
     // const price = document.querySelector('.nightprice')
     // price.style.setProperty('display','block','important')
   }
+  // Assuming `room` is part of the props
 
 
 
@@ -307,7 +402,7 @@ function Atstaynextpage() {
         return (
           <div className='container nonflex' style={{ display: " flex", margin: '0px auto' }}>
             <div className="container" style={{ height: 'auto', }}>
-              <h1>{ele.trip}</h1>
+              {/* <h1 className='colorss'>{ele.trip}</h1> */}
               <div id="carouselExampleFade" class="carousel slide carousel-fade  carouselimgage" >
                 <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -318,6 +413,7 @@ function Atstaynextpage() {
                   </div>
                   <div class="carousel-item">
                     <img src={ele.img3} class="d-block" alt="..." />
+
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -329,8 +425,10 @@ function Atstaynextpage() {
                   <span class="visually-hidden">Next</span>
                 </button>
               </div>
+              <h1 className='colorss mt-3' style={{fontSize:'30px'}}>{ele.trip}</h1>
+
               <hr style={{ width: "90%" }} />
-              <div style={{ textAlign: "justify", width: "90%" }}> <h3>Description</h3>
+              <div style={{ textAlign: "justify", width: "90%" }}> <h3 className='colorss'>Description</h3>
                 <p>{ele.desc}</p>
               </div>
               <hr style={{ width: "90%" }} />
@@ -341,7 +439,7 @@ function Atstaynextpage() {
 
         </div> */}
               <div className='container-fluid my-4' style={{ width: "70%", padding: "0px", margin: '0px' }}>
-                <h3 className='my-4'>Hotel Facilities</h3>
+                <h3 className='my-4 colorss'>Hotel Facilities</h3>
                 {mm3.map((emm) => {
 
 
@@ -385,43 +483,63 @@ function Atstaynextpage() {
                 {/*  */}
 
                 <div style={{ width: "50%" }}>
-                  <h3 className='my-3'> Rules</h3>
+                  <h3 className='my-3 colorss'> Rules</h3>
                   <div style={{ display: "flex", justifyContent: "space-between" }}><p> Check In </p> <p>12:00 pm</p></div>
                   <div style={{ display: "flex", justifyContent: "space-between" }}><p> Check Out </p> <p>11:00 Am</p></div>
 
                   <div></div>
                 </div>
               </div>
-              {mm2.map((eles) => {
+              
+              {mm2.map((eles , i) => {
+                const roomData =eles.room1.length;
                 {
                   return (
-                    <div style={{ width: "90%", padding: "2px" }}>
-                      <h1> Rooms</h1>
+
+                    <div style={{ width: "90%", padding: "2px" }} key={i}>
+                      <h1  className='colorss'>Rooms</h1>
+                      
+                          
+                       
                       {eles.room1.map((room, i) => (
+                          // const room1Length = room.room.length
 
 
-                        <div className="direct" style={{ display: "flex", border: "0.1px solid #d0dbdb", justifyContent: "space-between", padding: "0", margin: "0" }}>
+                        <div key={i} className="direct" style={{ display: "flex", border: "0.1px solid #d0dbdb", justifyContent: "space-between", padding: "0", margin: "0" }}>
                           <div className="fixsize">
-                            <Link to={`/rooms/${room.id}`}> <img src={room.imgs} style={{ height: "200px", padding: "0", margin: "0" }}></img></Link>
+                            <Link to={`/rooms/${room.id}?roomValue=${localStorage.getItem(`valuee${i}`)}`}> <img src={room.imgs} style={{ height: "200px", padding: "0", margin: "0" }}></img></Link>
                           </div>
-                          <div className="mt-2 " style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}> <h5 className='ms-2'> {room.roomtype}</h5>
+                          <div className="mt-2 " style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}> <h5 className='ms-2 colorss'> {room.roomtype}</h5>
+                           
                             <div style={{ display: "flex" }}>
                               <i class="fa-solid fa-bed  fs-4 mt-2 mx-3"></i>        <i class="fa-solid fa-people-arrows fs-4 mt-2 mx-3"></i>
                               <i class="fa-solid fa-child fs-4 mt-2 mx-3"></i>
 
-
-
-
                             </div>
+             
+                            {datass.map((items, i) => {
+  if (items.id === room.js) {
+    // Assuming 'i' is the index of the iteration
+    localStorage.setItem(`valuee${i}`, items.room);
+    return <p key={i} className="hidecontent">{items.room}</p>;
+  }
+  return null; // If the condition is not met, you can return null or an empty fragment
+})}
 
+    </div>
+  
+                      
+ 
 
-                          </div>
-
-                          <div style={{ display: "flex", justifyContent: 'center', alignItems: "center", flexDirection: 'column' }}><Link to={`/rooms/${room.id}`}><button className='btn btn-large btn-danger mt-4 me-3' >Show more</button></Link></div>
+                          
+                          <div style={{ display: "flex", justifyContent: 'center', alignItems: "center", flexDirection: 'column' }}><Link to={`/rooms/${room.id}?roomValue=${localStorage.getItem(`valuee${i}`)}`} onClick={()=>Scrooltop()}><button className='btn btn-large btn-danger mt-4 me-3 showbtn' >Show more</button></Link></div>
                           {/* <span className="nightprice" style={{fontSize:'15px' , fontFamily:'cursive',fontWeight:'800' , display:'none' }}>{room.price[i] * numberofdays}/ {numberofdays} night</span> */}
 
                         </div>
                       ))}
+                      
+                  
+                  
 
                     </div>
                   )
@@ -436,24 +554,24 @@ function Atstaynextpage() {
                 <i class="fa-solid fa-xmark" onClick={closebox} style={{ float: 'right', display: 'none', cursor: 'pointer' }}></i>
                 <div style={{ backgroundColor: "#66cccc", height: "70px", display: "flex", justifyContent: "center", alignItems: 'center', border: "0.1px solid #66cccc" }} > <h5>from ₹ {ele.price}/night</h5></div>
 
-                <div style={{ backgroundColor: "#fff", height: "70px", display: "flex", justifyContent: "center", alignItems: 'center', border: "0.1px solid #66cccc" }} ><h4>Book</h4>
+                <div style={{ backgroundColor: "#fff", height: "70px", display: "flex", justifyContent: "center", alignItems: 'center', border: "0.1px solid #66cccc" }} ><h4 className='colorss'>Book</h4>
 
                 </div>
 
 
                 <div style={{ height: "150px", display: 'flex' }}>
-                  <div style={{ backgroundColor: "white", height: "100%", width: "50%", border: "0.1px solid #66cccc" }}><p className='mt-4 ms-2'>Check In</p>
+                  <div style={{ backgroundColor: "white", height: "100%", width: "50%", border: "0.1px solid #66cccc" }}><p className='mt-4 ms-2 colorss'>Check In</p>
                     <input type="date" placeholder="asdf" value={checkin} onChange={(e) => { setcheckin(e.target.value) }} style={{ width: '100%', padding: '10px', border: "none" }} /></div>
-                  <div style={{ backgroundColor: "white", height: "100%", width: "50%", border: "0.1px solid #66cccc", }}><p className='mt-4 ms-2'>Check Out</p>
+                  <div style={{ backgroundColor: "white", height: "100%", width: "50%", border: "0.1px solid #66cccc", }}><p className='mt-4 ms-2 colorss'>Check Out</p>
                     <input type="date" placeholder="asdf" value={checkout} onChange={(e) => { setcheckout(e.target.value) }} style={{ width: '100%', padding: '10px', border: "none" }} /></div>
 
                 </div>
                 <div className='p-5' style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "170px", borderTop: '1px solid #66cccc' }}>
-                  <p style={{ fontWeight: "600" }}>Check In-Out</p>
+                  <p className='colorss' style={{ fontWeight: "600" }}>Check In-Out</p>
 
-                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between", }}> <span style={{ width: '70px' }}> Room</span> <span style={{ width: '' }} onClick={() => dec()}>-</span><input className='tt' type="text" value={num} onChange={(e) => { setnum(e.target.value) }} style={{ color: "black", backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span onClick={() => inc()}>+</span></div>
-                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between" }}> <span style={{ width: "70px" }}> Adult</span> <span style={{ width: '' }} onClick={() => dec1()}>-</span><input className='tt' type="text" value={nums} onChange={(e) => { setnums(e.target.value) }} style={{ color: "black" , backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span onClick={() => inc1()}>+</span></div>
-                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between" }} ><span style={{ width: "70px" }}> Children</span> <span style={{ width: '' }} onClick={() => dec2()} className="">-</span><input className='tt' type="text" value={numss} onChange={(e) => { setnumss(e.target.value) }} style={{ color: "black" , backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span className='' onClick={() => inc2()}>+</span></div>
+                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between", }}> <span style={{ width: '70px' }} className='colorss'> Room</span> <span style={{ width: '' }} onClick={() => dec()}>-</span><input className='tt' type="text" value={num} onChange={(e) => { setnum(e.target.value) }} style={{ color: "black", backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span onClick={() => inc()}>+</span></div>
+                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between" }}> <span style={{ width: "70px" }} className='colorss'> Adult</span> <span style={{ width: '' }} onClick={() => dec1()}>-</span><input className='tt' type="text" value={nums} onChange={(e) => { setnums(e.target.value) }} style={{ color: "black" , backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span onClick={() => inc1()}>+</span></div>
+                  <div style={{ cursor: "pointer", fontWeight: "600", width: "100%", display: "flex", justifyContent: "space-between" }} ><span style={{ width: "70px" }} className='colorss'> Children</span> <span style={{ width: '' }} onClick={() => dec2()} className="">-</span><input className='tt' type="text" value={numss} onChange={(e) => { setnumss(e.target.value) }} style={{ color: "black" , backgroundColor:'rgb(102, 204, 204)' , border:'none' }}></input><span className='' onClick={() => inc2()}>+</span></div>
 
 
                 </div>
@@ -464,8 +582,8 @@ function Atstaynextpage() {
 
               </div>
               <div className='fs-5 mt-5' style={{ display: "flex", height:"100px", flexDirection: "column", justifyContent: "center", alignItems: "center", border: "1px solid #66cccc" }}>
-                <div style={{ display: "flex" }}><div><i style={{ color: "#66cccc", fontWeight: "600" }} class="fa-solid fa-envelope mt-1 me-2"></i></div><div style={{ fontWeight: "700" }}> Atraski@Gmail.com</div></div>
-                <div style={{ display: "flex" }}> <div><i style={{ color: "#66cccc", fontWeight: "600" }} class="fa-solid fa-phone mt-1 me-5"></i></div><div style={{ fontWeight: "700" }} className='me-3' >8898734567</div></div>
+                <div style={{ display: "flex" }}><div><i style={{ color: "#66cccc", fontWeight: "600" }} class="fa-solid fa-envelope mt-1 me-2"></i></div><div style={{ fontWeight: "700" }} className='colorss'> Atraski@Gmail.com</div></div>
+                <div style={{ display: "flex" }}> <div><i style={{ color: "#66cccc", fontWeight: "600" }} class="fa-solid fa-phone mt-1 me-5"></i></div><div style={{ fontWeight: "700" }} className='me-3 colorss' >8898734567</div></div>
               </div>
             </div>
 

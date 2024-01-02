@@ -121,7 +121,7 @@ export default function Attournext() {
 
       {mm1.map((send)=>{
             return(
-      <div className="">
+      <div className="over">
         <div className="imgbg ppp" style={{backgroundImage:`url(${send.imges})`}}>
 
         </div>
@@ -228,12 +228,12 @@ export default function Attournext() {
     
                   </div>
                 </div>
-                <div className="col-md-4 ">
-                  <div className="box1 hideing">
+                <div className="col-md-4 box11">
+                  <div className="box1">
                     
     
     
-                    <div className="tripPrice py-4 bg-primary text-white" style={{borderBottom:'1px solid black'}}>
+                    <div className="tripPrice py-4  text-white" style={{borderBottom:'1px solid black',backgroundColor:'#66cccc'}}>
                       <span className="mx-5 text-grey" >from <span style={{fontSize:'24px', marginLeft:'10px'}}>₹{send.price} </span></span>
                     </div>
     
@@ -270,8 +270,8 @@ export default function Attournext() {
                         </div>
                       </div> 
     
-                      <div className="button py-4 text-center" style={{borderTop:'1px solid black' , display:'flex' , flexDirection:'column'}}>
-                       <Link to={`/cart/${send.id}`}> <button className="btn bg-primary text-white py-2 " onClick={()=>Book()} >Book Now</button></Link>
+                      <div className="button py-4 text-center" style={{borderTop:'1px solid black' , display:'flex' , flexDirection:'column',backgroundColor:'#66cccc'}}>
+                       <Link  style={{margin:"auto"}} to={`/cart/${send.id}`}> <button className="btn  py-2 " style={{backgroundColor:"white",color:"black",width:'100%'}} onClick={()=>Book()} >Book Now</button></Link>
                       </div>
     
                   </div>
@@ -291,7 +291,7 @@ export default function Attournext() {
       
       <Footers className="foot" />
 
-
+{/* 
       <div className="whitebox w-100 bg-white d-none" style={{ height: '80px', justifyContent: 'space-between', alignItems: 'center', zIndex: 20, position: "fixed", bottom: '0%' }}>
         <div className="pricesss">
           {
@@ -308,7 +308,7 @@ export default function Attournext() {
         <div className="booking">
           <button className="btn btn-primary mx-5 butt" style={{ width: '200px' }} onClick={showbox}>Book Now</button>
         </div>
-      </div>
+      </div> */}
 
           
 

@@ -2,9 +2,11 @@
 
 * {
   margin: 0;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color:#312e2eb5;
+
 }
 
 code {

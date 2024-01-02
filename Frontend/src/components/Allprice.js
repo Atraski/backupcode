@@ -13,41 +13,41 @@ export default function Allprice() {
     const [allRooms, setAllRooms] = useState([]);
     const cms = data.filter((ds)=> ds.id == allRooms.id);
     console.log(cms, "sss")
-    const [bg , setBackgroundColor] = useState('');
-    const [bg1 , setColor1] = useState('');
-    const [isUpdated , setIsUpdated] = useState(false);
-    // const [allRooms , setAllRooms] = useState([]);
-    const [updatedRows , setUpdatedRows] = useState([]);
+    const [bg, setBackgroundColor] = useState('');
+    const [bg1, setColor1] = useState('');
+    const [isUpdated, setIsUpdated] = useState(false);                                                                                              
+    // const [allRooms, setAllRooms] = useState([]);
+    const [updatedRows, setUpdatedRows] = useState([]);
 
-
+ console.log(allRooms,'room')
     useEffect(() => {
         // Fetch all room data when the component mounts
         fetchAllRooms();
     }, []);
+    const fetchAllRooms = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/rooms/all');
+        const data = await response.json();
   
-      const fetchAllRooms = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/rooms/all');
-            const data1 = await response.json();
-            console.log(data1)
-            setAllRooms(data1);
-            console.log(data1.roomprice)
-            console.log(data1.lastUpdate)
-            const lastUpdateDate = new Date(data1[0].lastUpdate); // Assuming lastUpdate is a valid date string
-            const currentDate = new Date();
-            const isUpdatedToday = lastUpdateDate.toDateString() === currentDate.toDateString();
-    console.log(isUpdatedToday)
-    console.log(lastUpdateDate)
-    console.log(currentDate)
-
-            // Set background color based on update status
-            setBackgroundColor(isUpdatedToday ? 'white' : '');
-            setColor1(isUpdatedToday ? 'black' : '');
-
-        } catch (error) {
-            console.error('Error fetching all room data:', error);
+        console.log('Fetched data:', data); // Log the fetched data
+  
+        if (data && data.length > 0) {
+          const lastUpdateDate = new Date(data[0].lastUpdate);
+          const currentDate = new Date();
+          const isUpdatedToday = lastUpdateDate.toDateString() === currentDate.toDateString();
+  
+          setBackgroundColor(isUpdatedToday ? 'white' : '');
+          setColor1(isUpdatedToday ? 'black' : '');
+        } else {
+          console.warn('No room data found');
         }
+  
+        setAllRooms(data);
+      } catch (error) {
+        console.error('Error fetching all room data:', error);
+      }
     };
+  
     
   const handleDelete = async (roomId) => {
     try {
@@ -100,12 +100,19 @@ export default function Allprice() {
             <table className="mt-5" style={{width:'100%' , textAlign:'center' , color:'black ' , border:'3px solid white'}}>
                             <tr className="jj">
                                 <th>Property Name</th>
-                                <th>Premium Rooms</th>
-                                <th>Normal Rooms</th>
-                                <th>Advance Rooms</th>
-                                <th>No Of Rooms Available</th>
+                                <th>Premium Rooms Price</th>
+                                <th>Normal Rooms Price</th>
+                                <th>Advance Rooms Price </th>
+                                {/* <th>No Of Rooms Available</th> */}
+                                <th>No. of Premium</th>
+                                <th>No. of Normal</th>
+                                <th>No. of Advance</th>
+
                                 <th></th>
                                 <th></th>
+
+
+                                
                             </tr>
             {
                 allRooms.map((rm , index)=>{
@@ -133,7 +140,9 @@ export default function Allprice() {
                             <th>{rm.roomprice}</th>
                             <th>{rm.roomprice1}</th>
                             <th>{rm.roomprice2}</th>
-                            <th>{rm.rooms}</th>
+                            <th>{rm.roomno1}</th>
+                            <th>{rm.roomno2}</th>
+                            <th>{rm.roomno3}</th>
                             <th ><button           onClick={() => handleUpdate(rm._id , index)}
  style={{margin:'0px' , background:'green'}}>Update</button></th>
 
@@ -157,3 +166,4 @@ export default function Allprice() {
     </div>
   )
 }
+

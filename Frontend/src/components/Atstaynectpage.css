@@ -12,7 +12,12 @@
     /* margin: auto; */
     margin-top: 50px;
   }
-
+.showbtn{
+  display: none;
+}
+.colorss{
+  color:#312e2e;
+}
 
   #carouselExampleFade{
     height:555px !important;
@@ -134,5 +139,21 @@
     .msx{
       margin-left:none !important;
       margin-right:none;
+    }                                          
+
+    
+  }
+
+  @media(max-width:400px){
+    .msx{
+      line-height:22px;
     }
+
+    .fixsize img{
+      width:100%;
+    }
+  }
+
+  .hidecontent{
+    display:none;
   }

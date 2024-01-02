@@ -8,13 +8,19 @@ const roomSchema = new mongoose.Schema({
     roomprice2: String,
     trip:String,
     status:String,
+    roomno1:String,
+    roomno2:String,
+    roomno3:String,
     
   lastUpdate: {
     type: Date,
     default: Date.now,
   },
 
-  
+  isUpdated: {
+    type: Boolean,
+    default: false,
+  },
 
   });
   

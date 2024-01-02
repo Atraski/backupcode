@@ -180,7 +180,9 @@ const navigate = useNavigate()
       
     </div>
     <div class="controls">
-      <input type="text" id="email" class="floatLabel" name="email" value={mail} required placeholder='email' onChange={(e)=>{setmail(e.target.value)}} />
+      <input type="text" id="email" class="floatLabel" name="email" value={mail} required 
+      
+      placeholder='email' onChange={(e)=>{setmail(e.target.value)}} />
       <label for="email"></label>
     </div>       
     <div class="controls">

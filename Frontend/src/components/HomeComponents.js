@@ -17,7 +17,7 @@ import camping from '../images/camping.jpg';
 import trending from '../images/trending.jpg';
 import mansion from '../images/Mansion.jpg';
 import tea from '../images/tea.jpg';
-import less from '../images/less.png'
+import less from '../images/less.png';
 // import './HomeComponents.css';
 import Footer from './Footer';
 import './HomeComponents.css';
@@ -60,23 +60,111 @@ export default function HomeComponents() {
 
   // window.location.reload();
 
-    const handleProductClick = (productId , productId2) => {
+    const handleProductClick = (productId) => {
       // Filter product cards based on the clicked image's id
       
-      const filteredImgs = imgs.filter((img) => img.ids === productId || img.ids1 === productId2);
+      const filteredImgs = imgs.filter((img) => img.ids === productId);
       // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
       console.log(filteredImgs)
         setImg(filteredImgs);
         // setImg(filteredImgs1);
-      
-      
 
-    
       // Update the search query with the selected destination
-      setSearchQuery(filteredImgs[0].place);
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+
+    const handleProductClick1 = (productId) => {
+      // Filter product cards based on the clicked image's id
       
+      const filteredImgs = imgs.filter((img) => img.ids1 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+    const handleProductClick2 = (productId) => {
+      // Filter product cards based on the clicked image's id
       
+      const filteredImgs = imgs.filter((img) => img.ids2 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+    const handleProductClick3 = (productId) => {
+      // Filter product cards based on the clicked image's id
       
+      const filteredImgs = imgs.filter((img) => img.ids3 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+
+    const handleProductClick4 = (productId) => {
+      // Filter product cards based on the clicked image's id
+      
+      const filteredImgs = imgs.filter((img) => img.ids4 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+    const handleProductClick5 = (productId) => {
+      // Filter product cards based on the clicked image's id
+      
+      const filteredImgs = imgs.filter((img) => img.ids5 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+    const handleProductClick6 = (productId) => {
+      // Filter product cards based on the clicked image's id
+      
+      const filteredImgs = imgs.filter((img) => img.ids6 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
+    };
+
+
+    const handleProductClick7 = (productId) => {
+      // Filter product cards based on the clicked image's id
+      
+      const filteredImgs = imgs.filter((img) => img.ids7 === productId);
+      // const filteredImgs1 = imgs.filter((img) => img.ids1 === productId2);
+      console.log(filteredImgs)
+        setImg(filteredImgs);
+        // setImg(filteredImgs1);
+
+      // Update the search query with the selected destination
+      setSearchQuery(filteredImgs[0].place);    
     };
 
     const handleSwipe = (direction) => {
@@ -194,7 +282,7 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={rooms}
   alt="First slide"
-  onClick={() => handleProductClick(1,2)} 
+  onClick={() => handleProductClick(1)} 
   
 />
 <p>rooms</p>
@@ -205,11 +293,11 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={beach}
   alt="First slide"
-  onClick={() => handleProductClick(2,7)} 
+  onClick={() => handleProductClick1(2)} 
   
   
 />
-<p>Beach</p>
+<p>River</p>
 </div>
 
 <div>
@@ -217,11 +305,11 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={lake}
   alt="First slide"
-  onClick={() => handleProductClick(3)} 
+  onClick={() => handleProductClick2(3)} 
   
   
 />
-<p>Lakes</p>
+<p>View</p>
 </div>
 
 <div>
@@ -229,10 +317,10 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={trending}
   alt="First slide"
-  onClick={() => handleProductClick(4)} 
+  onClick={() => handleProductClick3(4)} 
   
 />
-<p>Trending</p>
+<p>Trek</p>
 </div>
 
 <div>
@@ -240,7 +328,7 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={camping}
   alt="First slide"
-  
+  onClick={() => handleProductClick4(5)}
   
 />
 <p>Camping</p>
@@ -251,10 +339,10 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={mansion}
   alt="First slide"
-  
+  onClick={() => handleProductClick5(6)}
   
 />
-<p>Mansion</p>
+<p>SnowFall</p>
 </div>
 
 <div>
@@ -262,10 +350,10 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={tea}
   alt="First slide"
-  
+  onClick={() => handleProductClick6(7)}
   
 />
-<p> Breakfast</p>
+<p> Mountains</p>
 </div>
 
 <div>
@@ -273,33 +361,13 @@ export default function HomeComponents() {
   className="d-block mycard"
   src={rooms}
   alt="First slide"
-  
+  onClick={() => handleProductClick7(8)}
   
 />
-<p>rooms</p>
+<p>Amazing View</p>
 </div>
 
-<div>
-<img
-  className="d-block mycard"
-  src={rooms}
-  alt="First slide"
-  
-  
-/>
-<p>rooms</p>
-</div>
 
-<div>
-<img
-  className="d-block mycard"
-  src={rooms}
-  alt="First slide"
-  
-  
-/>
-<p>rooms</p>
-</div>
 
 {/* <div>
 <img

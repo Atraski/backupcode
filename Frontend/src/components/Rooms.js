@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+// import React, {useState} from 'react';
+import  { useState} from 'react';
+
 import { productData4 } from './Atstaynextdata';
 import{ useEffect} from 'react';
 import {productData} from './Atstaysdata';
 import { productData6 } from './Atstaynextprice';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import { productData1 } from './Atstaynextdata';
 import { facilities } from './Atstaynextdata';
@@ -16,16 +20,26 @@ import { useNavigate , useParams , Link } from 'react-router-dom';
 import './room.css';
 
 import Footer from './Footer.js';
+import { useLocation } from 'react-router-dom';
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
-
+    
+import React from 'https://cdn.skypack.dev/react@17.0.1';
+import ReactDOM from 'https://cdn.skypack.dev/react-dom@18.2.0';
 function Rooms(){
   const params = useParams();
+  const location = useLocation();
+  const roomValue = new URLSearchParams(location.search).get('roomValue');
+  console.log(roomValue , "csc")
+  console.log(localStorage.getItem(`valuee0`))
 
 
   // const [nextmm , setNextmm] = useState(productData);
   // const mm4mm = next.filter((ds)=> ds.id == params.id)
 
     const [next , setNext] = useState(productData4);
+    const [Increment , setIncrement] = useState(roomValue)
+    const [showMoreLines, setShowMoreLines] = useState(false);
+
     const mm4 = next.filter((ds)=> ds.id == params.id)
     console.log(mm4)
 
@@ -39,7 +53,42 @@ function Rooms(){
     const [nums,setnums] = useState(() => localStorage.getItem('adult'));
     const [num,setnum] = useState(() => localStorage.getItem('room'));
     const [numberOfDays, setNumberOfDays] = useState(0);
+    const [r1, setr1] = useState(0);
+    const [r2, setr2] = useState(0);
+    const [r3, setr3] = useState(0);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+
+    const [scrolled, setScrolled] = useState(false);
+
+  // Event listener to track scroll position
+  const handleScroll = () => {
+    const scrollPosition = window.scrollY;
+    // Adjust the threshold based on when you want the transition to occur
+    const scrollThreshold = 100;
+
+    // Update the state based on scroll position
+    setScrolled(scrollPosition > scrollThreshold);
+  };
+
+  // Attach the scroll event listener when the component mounts
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [])
+  
     useEffect(() => {
       const checkinDate = new Date(checkin);
       const checkoutDate = new Date(checkout);
@@ -80,13 +129,36 @@ function Rooms(){
       localStorage.setItem('child', numss);
       localStorage.setItem('adult', nums);
       localStorage.setItem('room', num);
+      fetchDataFromServer();
     }, [data, dd1, faci, checkout, checkin, numss, nums, num]);
   
   
     
   
-  
-  
+    const fetchDataFromServer = async () => {
+      try {
+          const response = await fetch(`http://localhost:5000/api/rooms/${params.id}`);
+          const data = await response.json();
+          console.log(data)
+
+          // setUpdatedRooms(data.rooms || 2);          
+          setr1(data.roomno1 || 2);
+          setr2(data.roomno2 || 2);
+          setr3(data.roomno3 || 2);
+          
+
+
+          // setRoomprice(data.roomprice || '');
+      } catch (error) {
+          console.error('Error fetching data from server:', error);
+      }
+
+  };
+
+  console.log(setr1,'sss')
+  console.log(setr2,'lll')
+  console.log(setr3,'sssss')
+
   
   
   
@@ -95,14 +167,28 @@ function Rooms(){
    }
   
     const inc=()=>{
-      setnum(num+1);
+      if(num<Increment){
+        setnum(parseInt(num+1));
+      }
+      else{
+        alert("Oops No More Rooms Available")
+      }
      }
      const inc1=()=>{
-       setnums(nums+1);
+      if(nums<num*2){
+        setnums(parseInt(nums+1));
       }
-      const inc2=()=>{
-       setnumss(numss+1);
+      else{
+        alert("No More Adults Are Allowed")
       }
+       
+      }
+      const inc2 = () => {
+    if(numss >=num){
+      setnumss(parseInt(numss) + 1);
+    }
+    
+  };
      const dec=()=>{
        if (num>0){
        setnum(num-1);
@@ -123,6 +209,8 @@ function Rooms(){
       else{
       }
      }
+     
+
 
      const showbox=()=>{
       const box = document.querySelector('.hideing');
@@ -140,15 +228,108 @@ function Rooms(){
       classss.classList.add('container')
       classss.classList.remove('container-fluid');
     }
+    // galleryy code   
+
+
+    const MyApp = () => {
+      // const [stateVariable, setStateVariable] = useState(initialValue);
+      
+
+      // const images = [
+      //   {
+      //     url:
+      //       'https://images.unsplash.com/photo-1611656752661-d66725c3bc0c?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjIzNzEyMjk&ixlib=rb-1.2.1&q=80',
+      //   },
+      //   {
+      //     url:
+      //       'https://images.unsplash.com/photo-1622398703904-7ae5d55f8e1a?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjIzNzEzMjk&ixlib=rb-1.2.1&q=80',
+      //   },
+      //   {
+      //     url:
+      //       'https://images.unsplash.com/photo-1621285853634-713b8dd6b5fd?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjIzODUwOTg&ixlib=rb-1.2.1&q=80',
+      //   },
+      //   {
+      //     url:
+      //       'https://images.unsplash.com/photo-1580274455191-1c62238fa333?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjIzODUxNzM&ixlib=rb-1.2.1&q=80',
+      //   },
+      // ];
+      const [selectedImg, setSelectedImg] = useState(productData4);
+      const [next , setNext] = useState(productData4);
+    const mm4 = next.filter((ds)=> ds.id == params.id);
+    useEffect(() => {
+      // Set the default image to the first image in the mm4 array
+      if (mm4.length > 0 && mm4[0].images.length > 0) {
+        setSelectedImg(mm4[0].images[0].image1);
+      }
+    }, []);
+    
+      return (
+
+        <div className="flex-row-wrapper">
+          <SelectedImages selectedImg={selectedImg} />
+          <Images images={selectedImg} selectImg={selectedImg} setSelectedImages={setSelectedImg} />
+        </div>
+      );
+    };
+  
+    const SelectedImages = (props) => {
+      const { selectedImg } = props;
+      return (
+        <div className="flex">
+          <img className="img" src={selectedImg} alt="img" />
+        </div>
+      );
+    };
+  
+    const Images = (props) => {
+      const { images, setSelectedImages } = props;
+      const [next, setNext] = useState(productData4);
+      const mm4 = next.filter((ds) => ds.id == params.id);
+  
+      const handleImageClick = (selectedImg) => {
+        setSelectedImages(selectedImg);
+      };
+  
+      return (
+        <div className="flexs">
+          {mm4.map((data, index) => (
+            data.images.map((mmcs, i) => (
+              <img
+                key={index}
+                src={mmcs.image1}
+                alt="images"
+                className="mini-img"
+                onClick={() => handleImageClick(mmcs.image1)}
+              />
+            ))
+          ))}
+        </div>
+      );
+    
+    };
+
+    
     return(
 
       
         <>
+     
+         <div className="container m222" >
+
+ <div className="container " data-aos="zoom-in" style={{transitionDelay:'0.3s' , transitionDuration:'1.3s'}}>
+      {/* Your existing divs with the flex class */}
+      <div className="flex ">
+        {/* Content of the first div */}
+        <MyApp />
+      </div>
+      <h2 className='ps-4 colorss'>Traditional Huts</h2>
+      </div>
+
         {mm4.map((nextm)=>{
         return(
           <>
           <div>
-          <Carousel styel={{maxwidth:"100%"}}>
+                    {/* <Carousel styel={{maxwidth:"100%"}}>
             {
               nextm.images.map((ele , i)=>{
                 return(
@@ -181,50 +362,60 @@ function Rooms(){
         </Carousel.Caption>
       </Carousel.Item> */}
     
-    </Carousel>
-        </div>
-        <div className="container nonflex" style={{ height:"auto", display:"flex"}} >
-            <div style={{width:"70%",height:"100%",backgroundColor:"white"}}>
-                <div className='mt-5 p-4' style={{padding:""}}>                <h1>Traditional Huts</h1>
+    {/* </Carousel> */} 
+        </div >
+        <div  className="container nonflex" style={{ height:"auto", display:"flex"}} >
+            <div  style={{width:"70%",height:"100%",backgroundColor:"white"}}>
+                <div className='mt-0 p-4' style={{padding:""}}>              
                 <hr style={{width:"100%"}}></hr>
 
 </div>
-<div style={{ display:"flex", justifyContent:"space-between",width:"95%"}}>
+<div className={`your-element-class ${scrolled ? 'scrolled' : ''}`} style={{ display:"flex", justifyContent:"space-around",width:"95%"}}>
     {/* <div  className='p-4'style={{display:"flex"}}>
     <i class="fa-solid fa-bed-pulse mt-1"></i>
     <p>Beds:1</p>
     </div> */}
-    <div  className='p-4'style={{display:"flex",}}>
-    <i class="fa-solid fa-bed-pulse mt-1 me-2"></i>
-    <p>Beds:1</p>
+    <div  className='p-4 pt-0 pb-0'style={{display:"flex" , flexDirection:'column'}}>
+      <div style={{display:'flex'}}>
+      <i  style={{color:"#000000a6"}} class="fa-solid fa-bed-pulse mt-1 me-3"></i> 
+    <p className="colorss">Beds:1</p> 
+      </div>
+    
+    <p style={{fontSize:'15px' , color:'#877f7f'}}>Only One Bed Is Available</p>
     </div>
-    <div  className='p-4'style={{display:"flex"}}>
-    <i class="fa-solid fa-children mt-1 me-2"></i>    <p>Adults:2</p>
+    <div  className='p-4 pt-0 pb-0'style={{display:"flex" , flexDirection:'column'}}>
+    <div style={{display:'flex'}}>
+    <i  style={{color:"#000000a6"}}class="fa-solid fa-children mt-1 me-3 "></i><p className="colorss">Adults:2</p>
     </div>
-    <div  className='p-4'style={{display:"flex"}}>
-    <i class="fa-solid fa-child mt-1 me-2"></i>    <p>Children:1</p>
+    <p style={{fontSize:'15px' , color:'#877f7f'}}>Only Two Adults Is Allowed</p>
+    </div>
+    <div  className='p-4 pt-0 pb-0'style={{display:"flex" , flexDirection:'column'}}>
+    <div style={{display:'flex'}}>
+    <i  style={{color:"#000000a6"}} class="fa-solid fa-child mt-1 me-3"></i><p className="colorss">Children:1</p>
+    </div>
+    <p style={{fontSize:'15px' , color:'#877f7f'}}>Only One Children Is Allowed</p>
     </div>
 </div>
 <hr  className='ms-4'style={{ width:"95%"}}></hr>
-<div style={{ display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
+<div className={`your-element-class ${scrolled ? 'scrolled' : ''}`} style={{ display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
 
-<div className='p-4' style={{display:"flex",flexDirection:"row",}}>
-    <h1>Room facilities
-</h1>
+<div className='ps-4 pb-4' style={{display:"flex",flexDirection:"row",}}>
+    <h4 className='colorss'>Room facilities
+</h4>
 
 </div>
-<div  style={{justifyContent:"space-between",width:"95%"}}> 
-<div  className='p-4'style={{display:"flex"}}>
-<i class="fa-solid fa-gear me-2 fs-3"></i>
-<p> Free wfi</p>
+<div  style={{display:'flex',justifyContent:"space-between",width:"88%"}}> 
+<div  className='ps-4 pb-4 pb-0'style={{display:"flex"}}>
+<i style={{color:"#000000a6"}}class="fa-solid fa-wifi me-3 fs-5"></i>
+<p className="colorss" > Free wfi</p>
 </div>
-<div  className='p-4'style={{display:"flex"}}>
-<i class="fa-solid fa-gear  me-2 fs-3 "></i>
-<p>Air Conditioning</p>
+<div  className='ps-4 pb-4 pb-0'style={{display:"flex"}}>
+<i style={{color:"#000000a6"}} class="fa-solid fa-fan me-3 fs-5"></i>
+<p className="colorss">Air Conditioning</p>
 </div>
-<div  className='p-4'style={{display:"flex"}}>
-<i class="fa-solid fa-gear  me-2 fs-3"></i>
-<p>Parking</p>
+<div  className='ps-4 pb-2 pb-0'style={{display:"flex"}}>
+<i style={{color:"#000000a6"}} class="fa-solid fa-car me-3 fs-5"></i>
+<p className="colorss">Parking</p>
 </div>
 
 
@@ -234,7 +425,30 @@ function Rooms(){
 
 
 </div>
+<div   className={`your-element-class ${scrolled ? 'scrolled' : ''} MMM ps-4 pe-4`}>
+        <h4 className='colorss'>Points Must Know About The Place</h4>
 
+        <div >
+          <p  className='pt-3' style={{textAlign:'justify'}}>Himachal Pradesh is a northern Indian state in the Himalayas. It's home to scenic mountain towns and resorts such as Dalhousie. Host to the Dalai Lama, Himachal Pradesh has a strong Tibetan presence. This is reflected in its Buddhist temples and monasteries, as well as its vibrant Tibetan New Year celebrations. The region is also well known for its trekking, climbing and skiing areas.</p>
+        </div>
+        {/* <button className='bg-primary btn-sm' onClick={() => setShowMoreLines(!showMoreLines)}>Show More</button> */}
+        <div className='divv' style={{}}>
+        <p  className='btn-sm modelbtn' onClick={openModal}>show More</p>&nbsp;&nbsp;<span>></span>
+
+        </div>
+      </div>
+
+      {/* 3D Modal */}
+      {isModalOpen && (
+        <div className="modal-3d-overlay">
+          <div className="modal-3d-content">
+            {/* Your modal content goes here */}
+            {/* <h2>3D Modal Content</h2> */}
+            <p>Himachal Pradesh is a northern Indian state in the Himalayas. It's home to scenic mountain towns and resorts such as Dalhousie. Host to the Dalai Lama, Himachal Pradesh has a strong Tibetan presence. This is reflected in its Buddhist temples and monasteries, as well as its vibrant Tibetan New Year celebrations. The region is also well known for its trekking, climbing and skiing areas.</p>
+            <button  className='closebtn'onClick={closeModal}>Close Modal</button>
+          </div>
+        </div>
+      )}
 
             </div>
 
@@ -317,6 +531,8 @@ function Rooms(){
           </>
         )
       })}
+              </div>
+
         <Footer></Footer>
 
         <div className="whitebox w-100 bg-white d-none" style={{height:'80px',justifyContent:'space-between',alignItems:'center',zIndex:20 , position:"fixed" , bottom:'0%'}}>
@@ -336,6 +552,7 @@ function Rooms(){
                 <button className="btn btn-primary mx-5" style={{width:'200px'}} onClick={showbox}>Book Now</button>
             </div>
         </div>
+
         </>
     )
 

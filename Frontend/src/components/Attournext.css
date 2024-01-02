@@ -12,7 +12,7 @@
   }
   
   /* Variables */
-  
+
   :root{
   
       /* Colors */
@@ -158,6 +158,12 @@
  }
 
  @media(max-width:500px){
+    .over{
+        overflow-x: hidden;
+      }
+    .box11{
+        margin-left:24px !important
+    }
     iframe{
         width:auto !important;
     }
